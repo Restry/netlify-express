@@ -11,18 +11,20 @@ router.get('/', (req, res) => {
   res.write('<h1>Hello there this is restry fork from netlify Express.js!</h1>');
   res.end();
 }); 
+
+router.get('/test', (req, res) => {
+  res.send('test'+new Date());
+  res.end();
+  console.log('test'+new Date())
+});
+
+
 router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', (req, res) => res.json({ postBody: req.body }));
 
 app.use(bodyParser.json());
 app.use('/.netlify/functions/server', router);  // path must route to lambda
 app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
-
-app.get('/test', (req, res) => {
-  res.send('test'+new Date());
-  res.end();
-  console.log('test'+new Date())
-});
 
 module.exports = app;
 module.exports.handler = serverless(app);
